@@ -1,0 +1,445 @@
+---
+title: "Bài tập: Cổng và Mạch lượng tử"
+subtitle: "10 bài luyện tập nhập môn"
+author: "Quantum Computing"
+shorttitle: "Bài tập Cổng và Mạch lượng tử"
+shortauthor: "Quantum Computing"
+lang: vi
+format:
+  beamer:
+    theme: Madrid
+    slide-level: 1
+    aspectratio: 169
+    pdf-engine: xelatex
+    fontsize: 11pt
+    fig-align: center
+    include-in-header:
+      text: |
+        \setlength\LTleft{\fill}
+        \setlength\LTright{\fill}
+---
+
+# Hướng dẫn
+
+- Mỗi bài có một slide đề và một slide lời giải.
+- Hãy tự làm trước khi xem lời giải.
+- Quy ước thứ tự trạng thái nhiều qubit: $|q_0q_1\ldots q_{n-1}\rangle$.
+- Cổng nằm bên phải trong biểu thức ma trận tác động trước.
+
+## Công thức cần nhớ
+
+$$
+H=\frac1{\sqrt2}\begin{bmatrix}1&1\\1&-1\end{bmatrix},\quad
+X=\begin{bmatrix}0&1\\1&0\end{bmatrix},\quad
+Z=\begin{bmatrix}1&0\\0&-1\end{bmatrix}.
+$$
+
+$$|\psi\rangle=\alpha|0\rangle+\beta|1\rangle,\;
+|\alpha|^2+|\beta|^2=1.$$
+
+{{< pagebreak >}}
+
+# Bài 1 — Chuẩn hóa và xác suất đo
+
+Cho trạng thái
+
+$$|\psi\rangle=\frac{|0\rangle+2i|1\rangle}{\sqrt5}.$$
+
+1. Kiểm tra $|\psi\rangle$ đã chuẩn hóa.
+2. Tính xác suất đo được 0 và 1.
+3. Nếu chạy 500 shots, số lần xuất hiện kỳ vọng của mỗi kết quả là bao nhiêu?
+
+::: {.block}
+## Mục tiêu
+
+Đọc biên độ và chuyển biên độ thành xác suất.
+:::
+
+{{< pagebreak >}}
+
+# Lời giải 1 — Chuẩn hóa và phép đo
+
+:::: {.columns}
+::: {.column width="57%"}
+## Lời giải
+
+$$
+\left|\frac1{\sqrt5}\right|^2+
+\left|\frac{2i}{\sqrt5}\right|^2
+=\frac15+\frac45=1.
+$$
+
+$$P(0)=\frac15,\; P(1)=\frac45.$$
+
+$$N_0\approx500\times\frac15=100,\;
+N_1\approx500\times\frac45=400.$$
+:::
+
+::: {.column width="39%"}
+::: {.alertblock}
+## Lỗi thường gặp
+
+- $|2i|^2=4$, không phải 2.
+- Xác suất là bình phương **độ lớn** của biên độ.
+- 100 và 400 là số đếm kỳ vọng, không bắt buộc đúng tuyệt đối.
+:::
+:::
+::::
+
+{{< pagebreak >}}
+
+# Bài 2 — Tác dụng của các cổng Pauli
+
+Cho ba trạng thái đầu vào riêng biệt:
+
+$$|0\rangle,\; |1\rangle,\; |+\rangle=\frac{|0\rangle+|1\rangle}{\sqrt2}.$$
+
+1. Tính $X|0\rangle$ và $X|1\rangle$.
+2. Tính $Z|0\rangle$ và $Z|1\rangle$.
+3. Tính $X|+\rangle$ và $Z|+\rangle$.
+4. Cổng nào thay đổi bit? Cổng nào thay đổi pha?
+
+{{< pagebreak >}}
+
+# Lời giải 2 — Các cổng Pauli
+
+$$X|0\rangle=|1\rangle,\; X|1\rangle=|0\rangle.$$
+
+$$Z|0\rangle=|0\rangle,\; Z|1\rangle=-|1\rangle.$$
+
+Với $|+\rangle$:
+
+$$
+X|+\rangle=|+\rangle,\;
+Z|+\rangle=\frac{|0\rangle-|1\rangle}{\sqrt2}=|-\rangle.
+$$
+
+- $X$ đổi giá trị `0 ↔ 1`.
+- $Z$ giữ bit cơ sở nhưng đổi dấu thành phần $|1\rangle$.
+
+{{< pagebreak >}}
+
+# Bài 3 — Thứ tự tác động của cổng
+
+Cho mạch
+
+$$|0\rangle\xrightarrow{H}\xrightarrow{Z}\xrightarrow{H}|\psi_{out}\rangle.$$
+
+1. Viết toán tử tổng hợp.
+2. Tính trạng thái sau từng cổng.
+3. Tính xác suất đo đầu ra.
+4. Mạch này tương đương cổng quen thuộc nào?
+
+::: {.alertblock}
+## Chú ý
+
+Trong $ABC|\psi\rangle$, cổng $C$ tác động đầu tiên.
+:::
+
+{{< pagebreak >}}
+
+# Lời giải 3 — Thứ tự cổng
+
+Toán tử tổng hợp là
+
+$$U=HZH.$$
+
+Theo dõi trạng thái:
+
+$$
+|0\rangle
+\xrightarrow{H}\frac{|0\rangle+|1\rangle}{\sqrt2}
+\xrightarrow{Z}\frac{|0\rangle-|1\rangle}{\sqrt2}
+\xrightarrow{H}|1\rangle.
+$$
+
+Do đó
+
+$$P(0)=0,\; P(1)=1.$$
+
+Mạch tương đương cổng $X$: $HZH=X$.
+
+{{< pagebreak >}}
+
+# Bài 4 — Kiểm tra một cổng unitary
+
+Cho ma trận
+
+$$
+U=\frac1{\sqrt2}
+\begin{bmatrix}1&i\\i&1\end{bmatrix}.
+$$
+
+1. Viết ma trận liên hợp chuyển vị $U^\dagger$.
+2. Tính $U^\dagger U$ và kết luận $U$ có phải cổng lượng tử hợp lệ không.
+3. Tính $U|0\rangle$.
+4. Tính xác suất đo được 0 và 1.
+
+{{< pagebreak >}}
+
+# Lời giải 4 — Kiểm tra unitarity
+
+$$
+U^\dagger=\frac1{\sqrt2}
+\begin{bmatrix}1&-i\\-i&1\end{bmatrix}.
+$$
+
+$$
+U^\dagger U=\frac12
+\begin{bmatrix}1&-i\\-i&1\end{bmatrix}
+\begin{bmatrix}1&i\\i&1\end{bmatrix}=I.
+$$
+
+Vậy $U$ là unitary. Với đầu vào $|0\rangle$:
+
+$$
+U|0\rangle=\frac{|0\rangle+i|1\rangle}{\sqrt2}.
+$$
+
+Do đó $P(0)=P(1)=1/2$.
+
+{{< pagebreak >}}
+
+# Bài 5 — Cổng quay $R_Y$
+
+Cho
+
+$$
+R_Y(\theta)|0\rangle
+=\cos\frac\theta2|0\rangle+\sin\frac\theta2|1\rangle.
+$$
+
+Một qubit bắt đầu ở $|0\rangle$ và đi qua $R_Y(\pi/3)$.
+
+1. Tính trạng thái đầu ra.
+2. Tính $P(0)$ và $P(1)$.
+3. Góc nào trong $[0,\pi]$ tạo xác suất 0 và 1 bằng nhau?
+
+{{< pagebreak >}}
+
+# Lời giải 5 — Cổng quay $R_Y$
+
+Với $\theta=\pi/3$, ta có $\theta/2=\pi/6$:
+
+$$
+R_Y(\pi/3)|0\rangle
+=\cos\frac\pi6|0\rangle+\sin\frac\pi6|1\rangle
+=\frac{\sqrt3}{2}|0\rangle+\frac12|1\rangle.
+$$
+
+Do đó
+
+$$P(0)=\frac34,\; P(1)=\frac14.$$
+
+Xác suất cân bằng khi
+
+$$\cos^2(\theta/2)=\sin^2(\theta/2)\Rightarrow\theta=\frac\pi2.$$
+
+{{< pagebreak >}}
+
+# Bài 6 — Tensor product
+
+Cho
+
+$$|a\rangle=|+\rangle=\frac{|0\rangle+|1\rangle}{\sqrt2},\;
+|b\rangle=|1\rangle.$$
+
+1. Khai triển $|a\rangle\otimes|b\rangle$ trong chuẩn hai qubit.
+2. Những kết quả đo nào có thể xuất hiện?
+3. Tính xác suất của từng kết quả.
+4. Hai qubit này có rối không?
+
+{{< pagebreak >}}
+
+# Lời giải 6 — Tensor product
+
+:::: {.columns}
+::: {.column width="57%"}
+## Lời giải
+
+$$
+|a\rangle|b\rangle
+=\frac{|0\rangle+|1\rangle}{\sqrt2}\otimes|1\rangle
+=\frac{|01\rangle+|11\rangle}{\sqrt2}.
+$$
+
+$$P(01)=\frac12,\; P(11)=\frac12.$$
+
+Các kết quả khác có xác suất bằng 0.
+:::
+
+::: {.column width="39%"}
+::: {.block}
+## Kết luận
+
+Trạng thái vẫn có dạng tích
+
+$$|+\rangle\otimes|1\rangle.$$
+
+Vì vậy hai qubit **không rối**.
+:::
+:::
+::::
+
+{{< pagebreak >}}
+
+# Bài 7 — CNOT trên trạng thái cơ sở
+
+CNOT có $q_0$ là control và $q_1$ là target:
+
+$$|q_0q_1\rangle\longmapsto|q_0,\ q_1\oplus q_0\rangle.$$
+
+1. Điền đầu ra cho bốn đầu vào $|00\rangle,|01\rangle,|10\rangle,|11\rangle$.
+2. Khi nào target bị đổi?
+3. CNOT có thuận nghịch không? Giải thích ngắn gọn.
+
+{{< pagebreak >}}
+
+# Lời giải 7 — CNOT
+
+| Đầu vào | Đầu ra |
+|:---:|:---:|
+| $|00\rangle$ | $|00\rangle$ |
+| $|01\rangle$ | $|01\rangle$ |
+| $|10\rangle$ | $|11\rangle$ |
+| $|11\rangle$ | $|10\rangle$ |
+
+Target chỉ bị đổi khi control bằng 1.
+
+CNOT thuận nghịch vì
+
+$$\mathrm{CNOT}^2=I.$$
+
+Áp dụng CNOT lần thứ hai sẽ khôi phục đầu vào ban đầu.
+
+{{< pagebreak >}}
+
+# Bài 8 — Đọc một mạch hai qubit
+
+Hai qubit bắt đầu ở $|q_0q_1\rangle=|00\rangle$:
+
+```text
+q0: |0⟩ ──H──
+
+q1: |0⟩ ──X──
+```
+
+1. Tìm trạng thái của từng qubit sau cổng tương ứng.
+2. Viết trạng thái chung của hai qubit.
+3. Khai triển theo các trạng thái cơ sở $|00\rangle,|01\rangle,|10\rangle,|11\rangle$.
+4. Tính xác suất của các kết quả đo có thể xuất hiện.
+
+{{< pagebreak >}}
+
+# Lời giải 8 — Mạch hai qubit
+
+Sau các cổng:
+
+$$
+q_0:\ H|0\rangle=|+\rangle,\;
+q_1:\ X|0\rangle=|1\rangle.
+$$
+
+Trạng thái chung là
+
+$$
+|+\rangle|1\rangle
+=\frac{|0\rangle+|1\rangle}{\sqrt2}\otimes|1\rangle
+=\frac{|01\rangle+|11\rangle}{\sqrt2}.
+$$
+
+Vì vậy
+
+$$P(01)=\frac12,\; P(11)=\frac12.$$
+
+Các kết quả `00` và `10` có xác suất bằng 0.
+
+{{< pagebreak >}}
+
+# Bài 9 — CNOT có luôn tạo rối không?
+
+Xét hai đầu vào:
+
+$$|\psi_A\rangle=|+\rangle|0\rangle,\;
+|\psi_B\rangle=|0\rangle|+\rangle.$$
+
+CNOT vẫn có qubit thứ nhất làm control.
+
+1. Tính đầu ra trong hai trường hợp.
+2. Đầu ra nào có rối?
+3. Từ đó, hãy nhận xét: chỉ nhìn thấy cổng CNOT có đủ để kết luận mạch tạo rối không?
+
+{{< pagebreak >}}
+
+# Lời giải 9 — Điều kiện tạo rối
+
+Trường hợp A:
+
+$$
+\mathrm{CNOT}|+0\rangle
+=\frac{|00\rangle+|11\rangle}{\sqrt2},
+$$
+
+là trạng thái rối.
+
+Trường hợp B:
+
+$$\mathrm{CNOT}|0+\rangle=|0+\rangle,$$
+
+vẫn là trạng thái tích.
+
+**Kết luận:** CNOT có tạo rối hay không còn phụ thuộc vào trạng thái đầu vào.
+
+{{< pagebreak >}}
+
+# Bài 10 — Theo dõi mạch ba qubit
+
+Ban đầu $|q_0q_1q_2\rangle=|000\rangle$. Thực hiện:
+
+```text
+q0: |0⟩ ──H────●────────
+               │
+q1: |0⟩ ───────X────●───
+                    │
+q2: |0⟩ ────────────X───
+```
+
+1. Viết trạng thái sau mỗi cổng.
+2. Liệt kê các kết quả đo có thể xảy ra.
+3. Tính xác suất của từng kết quả.
+
+{{< pagebreak >}}
+
+# Lời giải 10 — Mạch ba qubit
+
+Sau $H$ trên $q_0$:
+
+$$|\psi_1\rangle=\frac{|000\rangle+|100\rangle}{\sqrt2}.$$
+
+Sau CNOT $q_0\rightarrow q_1$:
+
+$$|\psi_2\rangle=\frac{|000\rangle+|110\rangle}{\sqrt2}.$$
+
+Sau CNOT $q_1\rightarrow q_2$:
+
+$$|\psi_{out}\rangle=\frac{|000\rangle+|111\rangle}{\sqrt2}.$$
+
+Do đó $P(000)=P(111)=1/2$.
+
+{{< pagebreak >}}
+
+# Tổng kết
+
+| Chủ đề | Bài |
+|:---|:---:|
+| Chuẩn hóa và xác suất đo | 1 |
+| Cổng Pauli và thứ tự cổng | 2–3 |
+| Unitary và cổng quay | 4–5 |
+| Tensor product | 6 |
+| CNOT | 7 |
+| Mạch hai qubit và entanglement | 8–9 |
+| Mạch ba qubit | 10 |
+
+\centering
+
+**Mục tiêu:** tính được trạng thái sau mạch và giải thích được kết quả đo.
